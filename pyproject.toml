@@ -1,0 +1,41 @@
+[project]
+name = "milagros-datalake"
+version = "0.1.0"
+description = "Data lake for Milagros hydroelectric prefeasibility study"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb>=1.2",
+    "pyarrow>=18.0",
+    "pandas>=2.2",
+    "geopandas>=1.0",
+    "rasterio>=1.4",
+    "rioxarray>=0.18",
+    "shapely>=2.0",
+    "fiona>=1.10",
+    "pyproj>=3.7",
+    "rio-cogeo>=5.0",
+    "xarray>=2024.10",
+    "netCDF4>=1.7",
+    "cdsapi>=0.7",
+    "earthengine-api>=1.4",
+    "pystac-client>=0.8",
+    "pydataxm>=0.3",
+    "requests>=2.32",
+    "httpx>=0.28",
+    "python-dotenv>=1.0",
+    "pyyaml>=6.0",
+    "tqdm>=4.67",
+    "tenacity>=9.0",
+    "structlog>=24.4",
+    "click>=8.1",
+    "xxhash>=3.5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov>=6.0"]
+analysis = ["matplotlib>=3.9", "scipy>=1.14", "jupyter>=1.1"]
+
+[project.scripts]
+milagros-ingest = "scripts.ingest_all:cli"
+milagros-process = "scripts.process_all:cli"
+milagros-validate = "scripts.validate:cli"

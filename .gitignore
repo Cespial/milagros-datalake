@@ -1,0 +1,38 @@
+# Data layers — reproducible via ingestors/processors
+bronze/
+silver/
+gold/
+exports/
+
+# Catalog state — regenerated
+catalog/catalog.duckdb
+catalog/catalog.duckdb.wal
+
+# Secrets
+.env
+
+# Binary data files
+*.tif
+*.nc
+*.grib
+*.hdf
+*.hdf5
+*.h5
+*.sav
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
