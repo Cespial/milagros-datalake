@@ -1,0 +1,333 @@
+# Phase 1 data sources for the Milagros Hydroelectric Prefeasibility Data Lake
+# Each entry describes one ingestion source.
+# Fields: name, category, url, data_type, schedule, license, phase, variables, notes
+
+ideam_dhime:
+  name: "IDEAM DHIME — Hidrometeorología Colombia"
+  category: hidrologia
+  url: "http://dhime.ideam.gov.co/ords/f?p=235:1"
+  data_type: tabular
+  schedule: monthly
+  license: "Datos abiertos Colombia — uso libre con atribución"
+  phase: 1
+  variables:
+    - caudal_m3s
+    - nivel_m
+    - precipitacion_mm
+    - temperatura_c
+  notes: "Estaciones hidrometeorológicas IDEAM; descarga manual por formulario DHIME o API REST no oficial"
+
+cds_era5:
+  name: "Copernicus Climate Data Store — ERA5 Reanalysis"
+  category: meteorologia
+  url: "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land"
+  data_type: raster
+  schedule: monthly
+  license: "Copernicus License v1.2 (open, attribution required)"
+  phase: 1
+  variables:
+    - temperatura_2m
+    - precipitacion_total
+    - evapotranspiracion
+    - viento_u10
+    - viento_v10
+    - radiacion_solar
+  notes: "ERA5-Land 0.1° hourly reanalysis; descarga via cdsapi; bbox AOI filtrado"
+
+chirps:
+  name: "CHIRPS — Climate Hazards Group InfraRed Precipitation with Station data"
+  category: meteorologia
+  url: "https://data.chc.ucsb.edu/products/CHIRPS-2.0/"
+  data_type: raster
+  schedule: monthly
+  license: "Public domain (CHC/UCSB)"
+  phase: 1
+  variables:
+    - precipitacion_mm
+  notes: "Precipitación diaria 0.05° desde 1981; descarga directa FTP/HTTPS; formato GeoTIFF"
+
+gee_dem:
+  name: "Google Earth Engine — SRTM/NASADEM Digital Elevation Model"
+  category: geoespacial
+  url: "https://developers.google.com/earth-engine/datasets/catalog/NASADEM_HGT_001"
+  data_type: raster
+  schedule: once
+  license: "NASA Open Data (public domain)"
+  phase: 1
+  variables:
+    - elevacion_m
+    - pendiente_grados
+    - aspecto_grados
+  notes: "NASADEM 30m descargado via Earth Engine API; incluye pendientes derivadas"
+
+hydrosheds:
+  name: "HydroSHEDS — Hydrological data and maps"
+  category: hidrologia
+  url: "https://www.hydrosheds.org/products"
+  data_type: vector
+  schedule: once
+  license: "HydroSHEDS License v1.1 (free non-commercial)"
+  phase: 1
+  variables:
+    - cuencas_hidrograficas
+    - rios_orden
+    - area_cuenca_km2
+    - longitud_cauce_km
+  notes: "HydroBASINS nivel 8-12 y HydroRIVERS para el AOI; formato GeoPackage"
+
+glofas:
+  name: "GloFAS — Global Flood Awareness System"
+  category: hidrologia
+  url: "https://cds.climate.copernicus.eu/datasets/cems-glofas-historical"
+  data_type: tabular
+  schedule: monthly
+  license: "Copernicus License v1.2 (open, attribution required)"
+  phase: 1
+  variables:
+    - caudal_pronosticado_m3s
+    - probabilidad_inundacion
+    - tiempo_retorno_anos
+  notes: "Pronósticos y reanalysis GloFAS v4 para estaciones en la cuenca; via cdsapi"
+
+sgc_geologia:
+  name: "SGC — Mapa Geológico de Colombia 1:100,000"
+  category: geologia
+  url: "https://www2.sgc.gov.co/MGC/Paginas/mgcescala100kConsulta.aspx"
+  data_type: vector
+  schedule: once
+  license: "Datos abiertos SGC (uso libre con atribución)"
+  phase: 1
+  variables:
+    - unidad_litologica
+    - edad_geologica
+    - codigo_formacion
+  notes: "Geología 1:100k plancha 146 (San Pedro de los Milagros); descarga WFS/portal SGC"
+
+sgc_sismicidad:
+  name: "SGC — Catálogo de Sismicidad Histórica Colombia"
+  category: geologia
+  url: "https://www2.sgc.gov.co/ProgramasDeInvestigacion/GeoamenazasYAmbientesFisicos/Paginas/Catalogo-de-sismos.aspx"
+  data_type: tabular
+  schedule: monthly
+  license: "Datos abiertos SGC (uso libre con atribución)"
+  phase: 1
+  variables:
+    - magnitud
+    - profundidad_km
+    - latitud
+    - longitud
+    - fecha_hora_utc
+  notes: "Sismos históricos 1644–presente dentro de radio 100 km del AOI; CSV descargable"
+
+sgc_simma:
+  name: "SGC SIMMA — Sistema de Información de Movimientos en Masa"
+  category: geologia
+  url: "https://simma.sgc.gov.co/"
+  data_type: vector
+  schedule: monthly
+  license: "Datos abiertos SGC (uso libre con atribución)"
+  phase: 1
+  variables:
+    - tipo_movimiento
+    - fecha_evento
+    - area_afectada_ha
+    - municipio
+  notes: "Inventario de deslizamientos, flujos y caídas de roca en el AOI; descarga API REST"
+
+sgc_amenaza:
+  name: "SGC — Mapa Nacional de Amenaza Sísmica"
+  category: geologia
+  url: "https://www2.sgc.gov.co/ProgramasDeInvestigacion/GeoamenazasYAmbientesFisicos/Paginas/amenaza-sismica.aspx"
+  data_type: raster
+  schedule: once
+  license: "Datos abiertos SGC (uso libre con atribución)"
+  phase: 1
+  variables:
+    - pga_475anos
+    - pga_2475anos
+    - zona_amenaza_sismica
+  notes: "Aceleración pico del terreno (PGA) para TR 475 y 2475 años; GeoTIFF NSR-10"
+
+igac_cartografia:
+  name: "IGAC — Cartografía Básica de Colombia"
+  category: geoespacial
+  url: "https://www.igac.gov.co/es/contenido/areas-estrategicas/cartografia-basica"
+  data_type: vector
+  schedule: once
+  license: "Datos abiertos IGAC (uso libre con atribución)"
+  phase: 1
+  variables:
+    - limite_municipal
+    - limite_departamental
+    - vias
+    - centros_poblados
+  notes: "Cartografía básica escala 1:25,000 para municipios del AOI; GeoPackage"
+
+xm_simem:
+  name: "XM SIMEM — Sistema de Información del Mercado Eléctrico Mayorista"
+  category: mercado_electrico
+  url: "https://www.simem.co/basedatos/archivos"
+  data_type: tabular
+  schedule: monthly
+  license: "XM S.A. E.S.P. — datos públicos de libre uso"
+  phase: 1
+  variables:
+    - precio_bolsa_kwh
+    - precio_contrato_kwh
+    - generacion_gwh
+    - demanda_gwh
+    - despacho_ideal_mw
+  notes: "Precios spot, generación y despacho del SIN; descarga API SIMEM o archivos CSV mensuales"
+
+corine_lc:
+  name: "IDEAM CORINE Land Cover Colombia"
+  category: biodiversidad
+  url: "https://www.siac.gov.co/catalogo-de-mapas"
+  data_type: raster
+  schedule: once
+  license: "Datos abiertos IDEAM/SIAC (uso libre con atribución)"
+  phase: 1
+  variables:
+    - cobertura_tierra
+    - codigo_corine
+    - area_ha
+  notes: "Cobertura de la tierra Colombia 2018 escala 1:100,000; formato GeoTIFF/SHP"
+
+mapbiomas:
+  name: "MapBiomas Colombia — Cobertura y Uso de la Tierra"
+  category: biodiversidad
+  url: "https://colombia.mapbiomas.org/"
+  data_type: raster
+  schedule: monthly
+  license: "Creative Commons CC-BY 4.0"
+  phase: 1
+  variables:
+    - cobertura_anual
+    - cambio_uso_suelo
+    - deforestacion_ha
+  notes: "Cobertura anual 1985–presente a 30m; descarga GEE Collection mapbiomas-colombia/collection2"
+
+dane_censo:
+  name: "DANE — Censo Nacional de Población y Vivienda 2018"
+  category: socioeconomico
+  url: "https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/censo-nacional-de-poblacion-y-vivenda-2018"
+  data_type: tabular
+  schedule: once
+  license: "Datos abiertos DANE (uso libre con atribución)"
+  phase: 1
+  variables:
+    - poblacion_total
+    - hogares
+    - viviendas
+    - necesidades_basicas_insatisfechas
+    - poblacion_rural
+  notes: "Resultados municipales CNPV 2018 para los 10 municipios del AOI"
+
+dnp_terridata:
+  name: "DNP Terridata — Indicadores Territoriales Colombia"
+  category: socioeconomico
+  url: "https://terridata.dnp.gov.co/"
+  data_type: tabular
+  schedule: monthly
+  license: "Datos abiertos DNP (uso libre con atribución)"
+  phase: 1
+  variables:
+    - ipm_municipal
+    - pib_per_capita
+    - cobertura_educacion
+    - cobertura_salud
+    - indice_ruralidad
+  notes: "Portal Terridata con +300 indicadores municipales; API REST disponible"
+
+agronet_eva:
+  name: "Agronet — Evaluaciones Agropecuarias Municipales (EVA)"
+  category: socioeconomico
+  url: "https://www.agronet.gov.co/estadistica/Paginas/home.aspx"
+  data_type: tabular
+  schedule: monthly
+  license: "Datos abiertos MinAgricultura (uso libre con atribución)"
+  phase: 1
+  variables:
+    - area_sembrada_ha
+    - produccion_toneladas
+    - rendimiento_t_ha
+    - cultivo
+  notes: "EVA anual por municipio y cultivo; descarga CSV Agronet para los municipios del AOI"
+
+nasa_power:
+  name: "NASA POWER — Prediction Of Worldwide Energy Resources"
+  category: solar_eolico
+  url: "https://power.larc.nasa.gov/api/temporal/daily/point"
+  data_type: tabular
+  schedule: monthly
+  license: "NASA Open Data (public domain)"
+  phase: 1
+  variables:
+    - radiacion_horizontal_global_kwh_m2
+    - velocidad_viento_50m_ms
+    - temperatura_2m_c
+    - irradiancia_directa_normal
+  notes: "API REST punto-por-punto; resolución diaria 1981–presente; coordenadas centroide AOI"
+
+upme_proyectos:
+  name: "UPME — Registro de Proyectos de Generación"
+  category: mercado_electrico
+  url: "https://www.upme.gov.co/generacion/AspxAutoDetectCookieSupport=1"
+  data_type: tabular
+  schedule: monthly
+  license: "Datos abiertos UPME (uso libre con atribución)"
+  phase: 1
+  variables:
+    - nombre_proyecto
+    - capacidad_mw
+    - tipo_generacion
+    - estado_proyecto
+    - departamento
+  notes: "Registro de proyectos eléctricos en Colombia; incluye pequeñas centrales hidroeléctricas (PCH)"
+
+runap:
+  name: "RUNAP — Registro Único Nacional de Áreas Protegidas"
+  category: biodiversidad
+  url: "https://runap.parquesnacionales.gov.co/cifras"
+  data_type: vector
+  schedule: monthly
+  license: "Datos abiertos Parques Nacionales (uso libre con atribución)"
+  phase: 1
+  variables:
+    - nombre_area
+    - categoria_manejo
+    - area_ha
+    - entidad_administradora
+  notes: "Todas las áreas protegidas SINAP dentro del AOI; descarga GeoPackage/SHP"
+
+corantioquia:
+  name: "CORANTIOQUIA — Datos Ambientales Antioquia"
+  category: regulatorio
+  url: "https://www.corantioquia.gov.co/informacion-al-ciudadano/datos-abiertos/"
+  data_type: vector
+  schedule: monthly
+  license: "Datos abiertos CORANTIOQUIA (uso libre con atribución)"
+  phase: 1
+  variables:
+    - concesiones_agua
+    - vertimientos_autorizados
+    - permisos_ambientales
+    - puntos_monitoreo_calidad_agua
+  notes: "Licencias y permisos ambientales activos en el área de influencia del proyecto"
+
+desinventar:
+  name: "Desinventar — Inventario de Desastres Colombia"
+  category: geologia
+  url: "https://www.desinventar.net/DesInventar/profiletab.jsp?countrycode=col"
+  data_type: tabular
+  schedule: monthly
+  license: "Creative Commons CC-BY (UNDRR)"
+  phase: 1
+  variables:
+    - tipo_evento
+    - fecha
+    - municipio
+    - muertos
+    - perdidas_usd
+    - descripcion
+  notes: "Registro histórico de desastres naturales Colombia; incluye inundaciones y deslizamientos"
