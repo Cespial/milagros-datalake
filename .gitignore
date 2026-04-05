@@ -1,8 +1,8 @@
 # Data layers — reproducible via ingestors/processors
-bronze/
-silver/
-gold/
-exports/
+/bronze/
+/silver/
+/gold/
+/exports/
 
 # Catalog state — regenerated
 catalog/catalog.duckdb
