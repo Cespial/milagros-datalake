@@ -39,3 +39,9 @@ analysis = ["matplotlib>=3.9", "scipy>=1.14", "jupyter>=1.1"]
 milagros-ingest = "scripts.ingest_all:cli"
 milagros-process = "scripts.process_all:cli"
 milagros-validate = "scripts.validate:cli"
+
+[tool.setuptools.packages.find]
+include = ["catalog*", "config*", "ingestors*", "processors*", "scripts*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
