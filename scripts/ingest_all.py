@@ -43,6 +43,19 @@ INGESTOR_REGISTRY = {
     "chelsa":           {"module": "ingestors.chelsa",           "class": "ChelsaIngestor",        "phase": 2, "category": "meteorologia"},
     "worldclim":        {"module": "ingestors.worldclim",        "class": "WorldClimIngestor",     "phase": 2, "category": "meteorologia"},
     "fao":              {"module": "ingestors.fao",              "class": "FaoIngestor",           "phase": 2, "category": "biodiversidad"},
+    "invias":           {"module": "ingestors.invias",           "class": "InviasIngestor",        "phase": 2, "category": "infraestructura"},
+    "upme_red":         {"module": "ingestors.upme_red",         "class": "UpmeRedIngestor",       "phase": 2, "category": "infraestructura"},
+    "mintic":           {"module": "ingestors.mintic",           "class": "MinticIngestor",        "phase": 2, "category": "infraestructura"},
+    "sui_sspd":         {"module": "ingestors.sui_sspd",         "class": "SuiSspdIngestor",       "phase": 2, "category": "mercado_electrico"},
+    "humboldt":         {"module": "ingestors.humboldt",         "class": "HumboldtIngestor",      "phase": 2, "category": "biodiversidad"},
+    "persiann":         {"module": "ingestors.persiann",         "class": "PersiannIngestor",      "phase": 2, "category": "meteorologia"},
+    # Phase 3 — specialized remote sensing, weather stations, infrastructure
+    "modis":            {"module": "ingestors.modis",            "class": "ModisIngestor",         "phase": 3, "category": "teledeteccion"},
+    "viirs":            {"module": "ingestors.viirs",            "class": "ViirsIngestor",         "phase": 3, "category": "teledeteccion"},
+    "copernicus_wq":    {"module": "ingestors.copernicus_wq",    "class": "CopernicusWqIngestor",  "phase": 3, "category": "calidad_agua"},
+    "noaa_gsod":        {"module": "ingestors.noaa_gsod",        "class": "NoaaGsodIngestor",      "phase": 3, "category": "meteorologia"},
+    "osm":              {"module": "ingestors.osm",              "class": "OsmIngestor",           "phase": 3, "category": "infraestructura"},
+    "nasa_lhasa":       {"module": "ingestors.nasa_lhasa",       "class": "NasaLhasaIngestor",     "phase": 3, "category": "geologia"},
 }
 
 
