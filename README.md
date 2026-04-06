@@ -6,8 +6,8 @@
 **Etapa:** Prefactibilidad avanzada
 **Capacidad objetivo:** >100 MW (licenciamiento ANLA, despacho central obligatorio)
 **Fuentes identificadas:** 80+ datasets en 13 categorias
-**Fuentes implementadas (Fase 1):** 22 ingestores operativos
-**Almacenamiento estimado:** ~60 GB recortado al area de estudio
+**Ingestores registrados:** 49 | **Produciendo datos:** 47
+**Almacenamiento:** 7.5 GB Bronze | 719 MB Silver | 16 MB Gold
 
 ---
 
@@ -157,20 +157,21 @@
 
 ### Resumen de Costos
 
-| Categoria | Gratuitas | Requieren registro gratuito | Requieren solicitud formal | De pago |
-|---|---|---|---|---|
-| Hidrologia | 5 | 1 (IDEAM) | — | — |
-| Meteorologia | 8 | 1 (CDS) | — | — |
-| Mercado electrico | 6 | — | — | — |
-| Geoespacial | 7 | 2 (USGS, GEE) | 1 (TanDEM-X) | — |
-| Teledeteccion | 7 | 2 (Earthdata) | — | 2 (Planet, Maxar) |
-| Calidad agua | 4 | 1 (ANLA) | 1 (CORANTIOQUIA datos crudos) | — |
-| Biodiversidad | 6 | — | — | — |
-| Geologia | 8 | — | — | — |
-| Solar/eolico | 4 | 1 (NREL) | — | — |
-| Socioeconomico | 6 | 1 (microdatos DANE) | 1 (EOT/PBOT) | — |
-| Infraestructura | 3 | — | — | — |
-| **Total** | **~65** | **~10** | **~3** | **2** |
+| Categoria | Entradas catalogo | Gratuitas | Requieren registro gratuito | Requieren solicitud formal | De pago |
+|---|---|---|---|---|---|
+| Hidrologia | 427 | 5 | 1 (IDEAM) | — | — |
+| Meteorologia | 514 | 8 | 1 (CDS) | — | — |
+| Mercado electrico | 32 | 6 | — | — | — |
+| Geoespacial | 13 | 7 | 2 (USGS, GEE) | 1 (TanDEM-X) | — |
+| Teledeteccion | 166 | 7 | 2 (Earthdata) | — | 2 (Planet, Maxar) |
+| Calidad agua | 26 | 4 | 1 (ANLA) | 1 (CORANTIOQUIA datos crudos) | — |
+| Biodiversidad | 36 | 6 | — | — | — |
+| Geologia | 84 | 8 | — | — | — |
+| Solar/eolico | 14 | 4 | 1 (NREL) | — | — |
+| Socioeconomico | 45 | 6 | 1 (microdatos DANE) | 1 (EOT/PBOT) | — |
+| Infraestructura | 14 | 3 | — | — | — |
+| Regulatorio | 15 | — | — | 1 (CREG/ANLA) | — |
+| **Total** | **1,386** | **~65** | **~10** | **~3** | **2** |
 
 **~95% de las fuentes son gratuitas y abiertas.** Solo Planet Labs y Maxar requieren pago (y pueden no ser necesarias si Sentinel-2 a 10m es suficiente).
 
@@ -192,6 +193,7 @@
 | Socioeconomico | 3 | DANE Censo, DNP TerriData, AGRONET |
 | Biodiversidad | 3 | MapBiomas, Corine Land Cover, RUNAP |
 | Regulatorio | 1 | CORANTIOQUIA POMCA |
+| **Total Fase 1** | **24** | |
 
 **Productos de Fase 1:**
 
@@ -208,7 +210,7 @@
 | **Indicadores Socioeconomicos** | Perfil municipal: poblacion, NBI, Gini, produccion | Capitulo socioeconomico del EIA |
 | **Recurso Solar/Eolico** | GHI, DNI, velocidad viento por punto del AOI | Evaluacion de solar flotante/complementariedad |
 
-### Fase 2: Datos Complementarios (Semanas 3-4)
+### Fase 2: Datos Complementarios (Semanas 3-4) -- COMPLETADA
 
 18 ingestores adicionales para teledeteccion, clima, biodiversidad, infraestructura:
 
@@ -224,7 +226,7 @@
 - FAO suelos (HWSD, GAEZ)
 - INVIAS + MinTIC + UPME red electrica
 
-### Fase 3: Datos Especializados (Semanas 5-6)
+### Fase 3: Datos Especializados (Semanas 5-6) -- COMPLETADA
 
 15+ ingestores para monitoreo avanzado:
 
@@ -236,7 +238,7 @@
 - Catastro Antioquia + OSM (predios, infraestructura local)
 - Planet Labs (si disponible via NICFI/educacion)
 
-### Fase 4: Documentos y Regulatorio (Continuo)
+### Fase 4: Documentos y Regulatorio (Continuo) -- COMPLETADA
 
 Pipeline de ingestion documental:
 
@@ -419,7 +421,7 @@ milagros-datalake/
 |   |-- consultores/
 |   |-- inversionistas/
 |   +-- reguladores/
-|-- ingestors/                # 22 modulos (1 por fuente)
+|-- ingestors/                # 49 modulos registrados (47 produciendo datos)
 |-- processors/               # Bronze->Silver->Gold
 |   |-- tabular/
 |   |-- raster/

@@ -12,6 +12,32 @@ from config.settings import SILVER_DIR, GOLD_DIR, EXPORTS_DIR
 
 log = structlog.get_logger()
 
+
+def _sanitize_columns_for_gpkg(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Deduplicate column names in a case-insensitive manner for GeoPackage compatibility.
+
+    GeoPackage (SQLite) stores column names case-insensitively, so columns that
+    differ only in case (e.g. ``objectid_1`` vs ``OBJECTID_1``) cause a FieldError
+    when writing. This helper renames colliding duplicates with a numeric suffix,
+    ensuring the generated suffix itself does not produce a new collision.
+    """
+    seen: set[str] = set()
+    new_cols: list[str] = []
+    for col in gdf.columns:
+        candidate = col
+        key = candidate.lower()
+        counter = 0
+        while key in seen:
+            counter += 1
+            candidate = f"{col}_{counter}"
+            key = candidate.lower()
+        seen.add(key)
+        new_cols.append(candidate)
+    if new_cols != list(gdf.columns):
+        gdf = gdf.copy()
+        gdf.columns = new_cols
+    return gdf
+
 DISCIPLINES = {
     "hidrologia": {
         "gold": [
@@ -76,6 +102,7 @@ def cli(disciplina: str, formato: str) -> None:
         if gold_file.endswith(".geoparquet"):
             gdf = gpd.read_parquet(src)
             if "geopackage" in formats:
+                gdf = _sanitize_columns_for_gpkg(gdf)
                 gdf.to_file(out_dir / f"{src.stem}.gpkg", driver="GPKG")
                 exported += 1
         else:
@@ -95,6 +122,7 @@ def cli(disciplina: str, formato: str) -> None:
             continue
         if "geopackage" in formats:
             gdf = gpd.read_parquet(src)
+            gdf = _sanitize_columns_for_gpkg(gdf)
             gdf.to_file(out_dir / f"{src.stem}.gpkg", driver="GPKG")
             exported += 1
 
