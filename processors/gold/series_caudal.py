@@ -27,7 +27,12 @@ def build(bronze_dir: Path, silver_dir: Path, gold_dir: Path, catalog: CatalogMa
 
     frames = []
 
-    # Source 1: IDEAM observed (alta confidence)
+    # Note: IDEAM nivel data is in Silver but NOT converted to caudal here.
+    # Nivel→caudal requires station-specific rating curves (curvas de calibracion)
+    # which are not available. IDEAM nivel data is kept in Silver for direct analysis.
+    # For discharge, we use Open-Meteo/GloFAS modeled data (Source 2 below).
+
+    # Source 1: IDEAM caudales (if available — legacy path)
     caudal_dir = silver_dir / "tabular" / "hidrologia" / "caudales"
     if caudal_dir.exists():
         for p in sorted(caudal_dir.rglob("*.parquet")):
@@ -44,7 +49,7 @@ def build(bronze_dir: Path, silver_dir: Path, gold_dir: Path, catalog: CatalogMa
                     df["fuente"] = "IDEAM DHIME"
                     frames.append(df[["fecha", "caudal_m3s", "confianza", "fuente"]].copy())
             except Exception as exc:
-                log.warning("series_caudal.ideam_failed", path=str(p), error=str(exc))
+                log.warning("series_caudal.ideam_caudal_failed", path=str(p), error=str(exc))
 
     # Source 2: Open-Meteo Flood API (media confidence — GloFAS modeled)
     flood_path = bronze_dir / "tabular" / "open_meteo" / "flood_discharge.json"
