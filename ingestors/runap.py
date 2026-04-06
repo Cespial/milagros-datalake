@@ -18,8 +18,8 @@ log = structlog.get_logger()
 
 # PNN (Parques Nacionales Naturales de Colombia) ArcGIS REST endpoint
 BASE_URL = (
-    "https://services2.arcgis.com/RVvWzU3lgJISqdke/arcgis/rest/services"
-    "/RUNAP_WGS84/FeatureServer/0/query"
+    "https://mapas.parquesnacionales.gov.co/arcgis/rest/services"
+    "/pnn/runap/FeatureServer/0/query"
 )
 
 PAGE_SIZE = 5000

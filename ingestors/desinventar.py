@@ -24,7 +24,7 @@ DESINVENTAR_API = "https://www.desinventar.net/DesInventar/api/colombia/disaster
 
 # datos.gov.co fallback
 DATOS_BASE = "https://www.datos.gov.co/resource"
-DATOS_DATASET_ID = "he96-kbic"
+DATOS_DATASET_ID = "wwkg-r6te"  # UNGRD Emergencias (verified working)
 PAGE_SIZE = 50_000
 
 DEPT_FILTERS = [

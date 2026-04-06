@@ -20,13 +20,13 @@ from ingestors.base import BaseIngestor
 log = structlog.get_logger()
 
 BASE_URL = (
-    "https://srvags.sgc.gov.co/arcgis/rest/services"
-    "/Geologia/Mapa_geologico_Colombia_2020/MapServer"
+    "https://geoportal.sgc.gov.co/arcgis/rest/services"
+    "/Mapa_Geologico_Colombia/Mapa_Geologico_Colombia_V2023/MapServer"
 )
 
 LAYERS = {
-    "unidades_geologicas": 0,
-    "fallas": 1,
+    "unidades_geologicas": 733,
+    "fallas": 704,
 }
 
 PAGE_SIZE = 5000

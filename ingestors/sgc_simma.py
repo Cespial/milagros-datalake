@@ -20,8 +20,8 @@ from ingestors.base import BaseIngestor
 log = structlog.get_logger()
 
 SIMMA_URL = (
-    "https://simma.sgc.gov.co/arcgis/rest/services/SIMMA/"
-    "Movimientos_en_masa/MapServer/0/query"
+    "https://geoportal.sgc.gov.co/arcgis/rest/services/SIMMA/"
+    "Capas_Principales/MapServer/1/query"
 )
 PAGE_SIZE = 1_000
 
@@ -51,47 +51,28 @@ class SgcSimmaIngestor(BaseIngestor):
 
         geometry = f"{west},{south},{east},{north}"
 
-        while True:
-            params = {
-                "where": "1=1",
-                "geometry": geometry,
-                "geometryType": "esriGeometryEnvelope",
-                "inSR": "4326",
-                "spatialRel": "esriSpatialRelIntersects",
-                "outFields": "*",
-                "f": "json",
-                "resultOffset": offset,
-                "resultRecordCount": PAGE_SIZE,
-                "returnGeometry": "true",
-            }
+        params = {
+            "where": "1=1",
+            "geometry": geometry,
+            "geometryType": "esriGeometryEnvelope",
+            "inSR": "4326",
+            "spatialRel": "esriSpatialRelIntersects",
+            "outFields": "*",
+            "outSR": "4326",
+            "f": "json",
+            "returnGeometry": "true",
+        }
 
-            log.info("sgc_simma.fetch_page", offset=offset)
+        log.info("sgc_simma.fetching")
 
-            try:
-                resp = httpx.get(SIMMA_URL, params=params, timeout=120)
-                resp.raise_for_status()
-                data = resp.json()
-            except Exception as exc:
-                log.error("sgc_simma.fetch_failed", offset=offset, error=str(exc))
-                break
-
-            features = data.get("features", [])
-            if not features:
-                break
-
-            all_features.extend(features)
-            log.info(
-                "sgc_simma.page_done",
-                offset=offset,
-                page_size=len(features),
-                total=len(all_features),
-            )
-
-            # ArcGIS indicates more records via exceededTransferLimit
-            if not data.get("exceededTransferLimit", False):
-                break
-
-            offset += PAGE_SIZE
+        try:
+            resp = httpx.get(SIMMA_URL, params=params, timeout=120)
+            resp.raise_for_status()
+            data = resp.json()
+            all_features = data.get("features", [])
+            log.info("sgc_simma.fetched", features=len(all_features))
+        except Exception as exc:
+            log.error("sgc_simma.fetch_failed", error=str(exc))
 
         result = {
             "type": "FeatureCollection",

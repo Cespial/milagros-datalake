@@ -22,9 +22,8 @@ log = structlog.get_logger()
 BASE_URL = "https://www.datos.gov.co/resource"
 
 DATASETS = {
-    "poblacion_2018": "qtp5-v59k",
-    "proyecciones":   "nlxm-gsci",
-    "viviendas":      "sn8c-bwqk",
+    "poblacion_2018": "8dar-v8rj",
+    "poblacion_grupo_etareo": "5wbm-t4vj",
 }
 
 PAGE_SIZE = 50_000
