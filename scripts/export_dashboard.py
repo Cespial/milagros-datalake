@@ -11,6 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import click
+import pandas as pd
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -412,6 +413,18 @@ def export_municipios(censo_path: Path, out_dir: Path):
     save_json(out_dir / "municipios.json", municipios)
 
 
+def export_curvas_duracion(gold_dir: Path, out_dir: Path):
+    """Annual flow duration curve from GloFAS curvas_duracion parquet."""
+    fdc_path = gold_dir / "curvas_duracion.parquet"
+    if not fdc_path.exists():
+        click.echo(f"  curvas_duracion.parquet not found at {fdc_path}, skipping.")
+        return
+    df = pd.read_parquet(fdc_path)
+    annual = df[df["period"] == "anual"][["exceedance_pct", "caudal_m3s"]].to_dict(orient="records")
+    (out_dir / "curvas_duracion.json").write_text(json.dumps(annual, indent=2))
+    click.echo(f"  wrote curvas_duracion.json  ({len(annual)} points)")
+
+
 def export_sismos(usgs_path: Path, out_dir: Path):
     """Simplified earthquake GeoJSON — M>=3.5 only."""
     data = load_json(usgs_path)
@@ -479,6 +492,7 @@ def main(output: str, bronze: str):
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
     bronze_dir = Path(bronze) if bronze else project_root / "bronze"
+    gold_dir = project_root / "gold"
 
     # Source paths
     nasa_path = bronze_dir / "tabular/nasa_power/nasa_power_19810101_20260401.json"
@@ -491,35 +505,38 @@ def main(output: str, bronze: str):
     geologia_path = bronze_dir / "vector/sgc_geologia/unidades_geologicas.geojson"
     fallas_path = bronze_dir / "vector/sgc_geologia/fallas.geojson"
 
-    click.echo("\n[1/9] indicators.json")
+    click.echo("\n[1/10] indicators.json")
     export_indicators(
         nasa_path, hazard_path, runap_path, simma_path,
         usgs_path, desinventar_path, bronze_dir, out_dir,
     )
 
-    click.echo("\n[2/9] ingestion_status.json")
+    click.echo("\n[2/10] ingestion_status.json")
     export_ingestion_status(out_dir)
 
-    click.echo("\n[3/9] precipitation.json")
+    click.echo("\n[3/10] precipitation.json")
     export_precipitation(nasa_path, out_dir)
 
-    click.echo("\n[4/9] geologia.geojson")
+    click.echo("\n[4/10] geologia.geojson")
     export_geologia(geologia_path, out_dir)
 
-    click.echo("\n[5/9] fallas.geojson")
+    click.echo("\n[5/10] fallas.geojson")
     export_fallas(fallas_path, out_dir)
 
-    click.echo("\n[6/9] areas_protegidas.geojson")
+    click.echo("\n[6/10] areas_protegidas.geojson")
     export_areas_protegidas(runap_path, out_dir)
 
-    click.echo("\n[7/9] aoi_boundary.geojson")
+    click.echo("\n[7/10] aoi_boundary.geojson")
     export_aoi_boundary(out_dir)
 
-    click.echo("\n[8/9] municipios.json")
+    click.echo("\n[8/10] municipios.json")
     export_municipios(censo_path, out_dir)
 
-    click.echo("\n[9/9] sismos.geojson")
+    click.echo("\n[9/10] sismos.geojson")
     export_sismos(usgs_path, out_dir)
+
+    click.echo("\n[10/10] curvas_duracion.json")
+    export_curvas_duracion(gold_dir, out_dir)
 
     # Summary
     click.echo("\n--- Summary ---")
