@@ -31,9 +31,10 @@ DEM_SOURCES = {
         "scale": 30,
     },
     "alos_palsar_12m": {
-        "collection": "JAXA/ALOS/AW3D30/V3_2",
+        "collection": "JAXA/ALOS/AW3D30/V4_1",
         "band": "DSM",
         "scale": 30,
+        "is_collection": True,
     },
 }
 
@@ -65,7 +66,7 @@ class GeeDemIngestor(BaseIngestor):
 
             log.info("gee_dem.exporting", name=name, collection=cfg["collection"])
 
-            if "GLO30" in cfg["collection"]:
+            if cfg.get("is_collection") or "GLO30" in cfg["collection"]:
                 image = (
                     ee.ImageCollection(cfg["collection"])
                     .select(cfg["band"])
