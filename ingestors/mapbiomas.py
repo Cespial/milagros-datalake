@@ -1,6 +1,6 @@
 """MapBiomas Colombia annual land cover ingestor via Google Earth Engine.
 
-Asset: projects/mapbiomas_af_trinacional/public/collection1/mapbiomas_colombia_collection1_integration_v1
+Asset: projects/mapbiomas-public/assets/colombia/collection2/mapbiomas_colombia_collection2_integration_v1
 Downloads one GeoTIFF per year (1985-2022) with band classification_{year}.
 
 Requires: GEE_PROJECT in .env, authenticated via `earthengine authenticate`
@@ -18,7 +18,7 @@ from ingestors.base import BaseIngestor
 
 log = structlog.get_logger()
 
-ASSET = "projects/mapbiomas_af_trinacional/public/collection1/mapbiomas_colombia_collection1_integration_v1"
+ASSET = "projects/mapbiomas-public/assets/colombia/collection2/mapbiomas_colombia_collection2_integration_v1"
 SCALE = 30  # MapBiomas native 30m
 START_YEAR = 1985
 END_YEAR = 2022

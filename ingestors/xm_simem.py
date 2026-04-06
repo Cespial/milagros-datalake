@@ -40,7 +40,7 @@ class XmSimemIngestor(BaseIngestor):
         paths: list[Path] = []
 
         try:
-            from pydataxm import ReadDB  # type: ignore
+            from pydataxm.pydataxm import ReadDB  # type: ignore
         except ImportError:
             log.warning(
                 "xm_simem.pydataxm_missing",
