@@ -20,6 +20,8 @@ SILVER_PROCESSORS = {
     "cuencas_vector":    {"module": "processors.vector.cuencas",             "function": "process"},
     "geologia_vector":   {"module": "processors.vector.geologia",            "function": "process"},
     "cobertura_vector":  {"module": "processors.vector.cobertura",           "function": "process"},
+    "open_meteo":        {"module": "processors.tabular.open_meteo",         "function": "process"},
+    "sentinel2_raster":  {"module": "processors.raster.sentinel2",           "function": "process"},
 }
 
 GOLD_VIEWS = {
