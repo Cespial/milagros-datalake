@@ -1,8 +1,13 @@
 """IDEAM DHIME hydrology station data via datos.gov.co SODA API.
 
 Datasets:
-  - Caudales (streamflow): us7c-gwhb
-  - Precipitacion (rainfall): s54a-sgyg
+  - Nivel instantaneo del rio: bdmn-sqnh (proxy for discharge, 2001-now)
+  - Nivel maximo del rio: vfth-yucv (daily max, 2001-now)
+  - Nivel minimo del rio: pt9a-aamx (daily min, 2001-now)
+  - Precipitacion: s54a-sgyg (2003-now)
+
+Note: IDEAM removed the caudales (us7c-gwhb) dataset from datos.gov.co.
+River level is the standard proxy for discharge in Colombian hydrology.
 
 Paginated with $limit/$offset. Filtered by AOI bounding box.
 """
@@ -21,7 +26,9 @@ log = structlog.get_logger()
 BASE_URL = "https://www.datos.gov.co/resource"
 
 DATASETS = {
-    "caudales": "us7c-gwhb",
+    "nivel_instantaneo": "bdmn-sqnh",
+    "nivel_maximo": "vfth-yucv",
+    "nivel_minimo": "pt9a-aamx",
     "precipitacion": "s54a-sgyg",
 }
 
