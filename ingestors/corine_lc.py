@@ -1,7 +1,15 @@
-"""Corine Land Cover Colombia ingestor via ArcGIS REST FeatureServer.
+"""Corine Land Cover Colombia ingestor via UPRA ArcGIS REST.
 
-Downloads land cover polygons for 5 epochs (2000, 2002, 2008, 2012, 2018)
-with spatial filter by AOI_BBOX. Outputs one GeoJSON per epoch.
+Source: geoservicios.upra.gov.co (Unidad de Planificación Rural Agropecuaria)
+Layers (Nivel 3 = most detailed, all Colombia, 1:100,000):
+  - clc_2000_2002_nivel_3 / layer 0
+  - clc_2005_2009_nivel_3 / layer 0
+  - clc_2010_2012_nivel_3 / layer 0
+
+Previous endpoint https://gis.siac.gov.co/arcgis/rest/services/IDEAM/Corine_Land_Cover/FeatureServer
+returned DNS failures. New UPRA endpoint confirmed working 2026-04-04.
+
+Outputs one GeoJSON per epoch, clipped to AOI_BBOX.
 """
 
 import json
@@ -15,22 +23,17 @@ from ingestors.base import BaseIngestor
 
 log = structlog.get_logger()
 
-# IDEAM / SIAC ArcGIS REST endpoint for Corine Land Cover Colombia
-BASE_URL = (
-    "https://gis.siac.gov.co/arcgis/rest/services"
-    "/IDEAM/Corine_Land_Cover/FeatureServer"
-)
+# UPRA ArcGIS REST endpoint for Corine Land Cover Colombia
+UPRA_BASE = "https://geoservicios.upra.gov.co/arcgis/rest/services/uso_suelo_rural"
 
-# Layer index per epoch (confirmed order from SIAC service)
+# Service name → epoch label (UPRA only has 3 published epochs at full-country scale)
 EPOCHS = {
-    2000: 0,
-    2002: 1,
-    2008: 2,
-    2012: 3,
-    2018: 4,
+    "2000_2002": f"{UPRA_BASE}/clc_2000_2002_nivel_3/MapServer/0",
+    "2005_2009": f"{UPRA_BASE}/clc_2005_2009_nivel_3/MapServer/0",
+    "2010_2012": f"{UPRA_BASE}/clc_2010_2012_nivel_3/MapServer/0",
 }
 
-PAGE_SIZE = 5000
+PAGE_SIZE = 2000
 
 
 class CorineLcIngestor(BaseIngestor):
@@ -39,10 +42,10 @@ class CorineLcIngestor(BaseIngestor):
     data_type = "vector"
     category = "biodiversidad"
     schedule = "once"
-    license = "Datos Abiertos Colombia (IDEAM)"
+    license = "Datos Abiertos Colombia (UPRA / IDEAM)"
 
-    def _fetch_epoch(self, epoch: int, layer_id: int) -> list[dict]:
-        """Paginate through all features for a given epoch layer."""
+    def _fetch_epoch(self, label: str, layer_url: str) -> list[dict]:
+        """Paginate through all features for a given CLC epoch layer."""
         bbox = (
             f"{AOI_BBOX['west']},{AOI_BBOX['south']}"
             f",{AOI_BBOX['east']},{AOI_BBOX['north']}"
@@ -61,13 +64,13 @@ class CorineLcIngestor(BaseIngestor):
             "resultRecordCount": PAGE_SIZE,
         }
 
-        url = f"{BASE_URL}/{layer_id}/query"
-        all_features = []
+        url = f"{layer_url}/query"
+        all_features: list[dict] = []
         offset = 0
 
         while True:
             params["resultOffset"] = offset
-            log.info("corine_lc.fetching", epoch=epoch, offset=offset)
+            log.info("corine_lc.fetching", epoch=label, offset=offset)
 
             response = httpx.get(url, params=params, timeout=120)
             response.raise_for_status()
@@ -83,7 +86,7 @@ class CorineLcIngestor(BaseIngestor):
 
         log.info(
             "corine_lc.epoch_complete",
-            epoch=epoch,
+            epoch=label,
             total_features=len(all_features),
         )
         return all_features
@@ -91,23 +94,25 @@ class CorineLcIngestor(BaseIngestor):
     def fetch(self, **kwargs) -> list[Path]:
         paths = []
 
-        for epoch, layer_id in EPOCHS.items():
-            out_path = self.bronze_dir / f"corine_lc_{epoch}.geojson"
+        for label, layer_url in EPOCHS.items():
+            out_path = self.bronze_dir / f"corine_lc_{label}.geojson"
             if out_path.exists():
-                log.info("corine_lc.skip_existing", epoch=epoch)
+                log.info("corine_lc.skip_existing", epoch=label)
                 paths.append(out_path)
                 continue
 
-            features = self._fetch_epoch(epoch, layer_id)
+            features = self._fetch_epoch(label, layer_url)
 
             geojson = {
                 "type": "FeatureCollection",
                 "features": features,
             }
-            out_path.write_text(json.dumps(geojson, ensure_ascii=False), encoding="utf-8")
+            out_path.write_text(
+                json.dumps(geojson, ensure_ascii=False), encoding="utf-8"
+            )
             log.info(
                 "corine_lc.saved",
-                epoch=epoch,
+                epoch=label,
                 path=str(out_path),
                 features=len(features),
             )
