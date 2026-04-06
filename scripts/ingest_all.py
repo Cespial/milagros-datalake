@@ -56,6 +56,10 @@ INGESTOR_REGISTRY = {
     "noaa_gsod":        {"module": "ingestors.noaa_gsod",        "class": "NoaaGsodIngestor",      "phase": 3, "category": "meteorologia"},
     "osm":              {"module": "ingestors.osm",              "class": "OsmIngestor",           "phase": 3, "category": "infraestructura"},
     "nasa_lhasa":       {"module": "ingestors.nasa_lhasa",       "class": "NasaLhasaIngestor",     "phase": 3, "category": "geologia"},
+    # Phase 4 — document/regulatory ingestors
+    "anla_vital":       {"module": "ingestors.anla_vital",       "class": "AnlaVitalIngestor",     "phase": 4, "category": "regulatorio"},
+    "creg":             {"module": "ingestors.creg",             "class": "CregIngestor",          "phase": 4, "category": "regulatorio"},
+    "eot_pbot":         {"module": "ingestors.eot_pbot",         "class": "EotPbotIngestor",       "phase": 4, "category": "regulatorio"},
 }
 
 
