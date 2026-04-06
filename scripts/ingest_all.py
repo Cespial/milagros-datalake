@@ -33,6 +33,7 @@ INGESTOR_REGISTRY = {
     "glofas":           {"module": "ingestors.glofas",          "class": "GlofasIngestor",        "phase": 1, "category": "hidrologia"},
     "global_solar":     {"module": "ingestors.global_solar",    "class": "GlobalSolarIngestor",   "phase": 2, "category": "solar_eolico"},
     "global_wind":      {"module": "ingestors.global_wind",     "class": "GlobalWindIngestor",    "phase": 2, "category": "solar_eolico"},
+    "nrel_nsrdb":       {"module": "ingestors.nrel_nsrdb",      "class": "NrelNsrdbIngestor",     "phase": 2, "category": "solar_eolico"},
     "open_meteo":       {"module": "ingestors.open_meteo",      "class": "OpenMeteoIngestor",     "phase": 2, "category": "meteorologia"},
     "gbif_sib":         {"module": "ingestors.gbif_sib",        "class": "GbifSibIngestor",       "phase": 2, "category": "biodiversidad"},
     "gee_sentinel2":    {"module": "ingestors.gee_sentinel2",   "class": "GeeSentinel2Ingestor",  "phase": 2, "category": "teledeteccion"},
@@ -41,6 +42,7 @@ INGESTOR_REGISTRY = {
     "cmip6":            {"module": "ingestors.cmip6",            "class": "Cmip6Ingestor",         "phase": 2, "category": "meteorologia"},
     "chelsa":           {"module": "ingestors.chelsa",           "class": "ChelsaIngestor",        "phase": 2, "category": "meteorologia"},
     "worldclim":        {"module": "ingestors.worldclim",        "class": "WorldClimIngestor",     "phase": 2, "category": "meteorologia"},
+    "fao":              {"module": "ingestors.fao",              "class": "FaoIngestor",           "phase": 2, "category": "biodiversidad"},
 }
 
 
