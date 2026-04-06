@@ -31,6 +31,9 @@ INGESTOR_REGISTRY = {
     "desinventar":      {"module": "ingestors.desinventar",     "class": "DesinventarIngestor",   "phase": 1, "category": "geologia"},
     "chirps":           {"module": "ingestors.chirps",          "class": "ChirpsIngestor",        "phase": 1, "category": "meteorologia"},
     "glofas":           {"module": "ingestors.glofas",          "class": "GlofasIngestor",        "phase": 1, "category": "hidrologia"},
+    "global_solar":     {"module": "ingestors.global_solar",    "class": "GlobalSolarIngestor",   "phase": 2, "category": "solar_eolico"},
+    "global_wind":      {"module": "ingestors.global_wind",     "class": "GlobalWindIngestor",    "phase": 2, "category": "solar_eolico"},
+    "open_meteo":       {"module": "ingestors.open_meteo",      "class": "OpenMeteoIngestor",     "phase": 2, "category": "meteorologia"},
 }
 
 
