@@ -50,10 +50,11 @@ def process(bronze_dir: Path, silver_dir: Path, catalog, **kwargs) -> list[Path]
         df = TabularProcessor.clean_nulls(df)
 
         dest_dir = out_dir / dataset.lower()
-        paths = TabularProcessor.write_partitioned(df, dest_dir)
-        written.extend(paths)
+        TabularProcessor.write_partitioned(df, dest_dir)
+        parquet_files = list(dest_dir.rglob("*.parquet"))
+        written.extend(parquet_files)
 
-        for p in paths:
+        for p in parquet_files:
             catalog.register({
                 "dataset_id": f"xm_simem_{dataset.lower()}",
                 "source": "XM SIMEM",
