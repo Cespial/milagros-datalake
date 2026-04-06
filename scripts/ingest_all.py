@@ -36,7 +36,11 @@ INGESTOR_REGISTRY = {
     "open_meteo":       {"module": "ingestors.open_meteo",      "class": "OpenMeteoIngestor",     "phase": 2, "category": "meteorologia"},
     "gbif_sib":         {"module": "ingestors.gbif_sib",        "class": "GbifSibIngestor",       "phase": 2, "category": "biodiversidad"},
     "gee_sentinel2":    {"module": "ingestors.gee_sentinel2",   "class": "GeeSentinel2Ingestor",  "phase": 2, "category": "teledeteccion"},
+    "gee_sentinel1":    {"module": "ingestors.gee_sentinel1",   "class": "GeeSentinel1Ingestor",  "phase": 2, "category": "teledeteccion"},
+    "gee_landsat":      {"module": "ingestors.gee_landsat",     "class": "GeeLandsatIngestor",    "phase": 2, "category": "teledeteccion"},
     "cmip6":            {"module": "ingestors.cmip6",            "class": "Cmip6Ingestor",         "phase": 2, "category": "meteorologia"},
+    "chelsa":           {"module": "ingestors.chelsa",           "class": "ChelsaIngestor",        "phase": 2, "category": "meteorologia"},
+    "worldclim":        {"module": "ingestors.worldclim",        "class": "WorldClimIngestor",     "phase": 2, "category": "meteorologia"},
 }
 
 
